@@ -3,10 +3,8 @@ import {
   View,
   Text,
   TextInput,
-  Image,
   Button,
   Dimensions,
-  SafeAreaView,
 } from 'react-native';
 import {useDispatch} from 'react-redux';
 import {savingToken, savingAccessToken} from '../../../feature/auth/tokenSlice';
@@ -33,10 +31,6 @@ const Login = () => {
         timer && clearInterval(timer);
         return;
       }
-    //   const currentUrl = externalPopup?.location?.href;
-    //   if (currentUrl === url) {
-    //     return;
-    //   } else {
         try {
           await createAccessToken(requestToken);
         } catch (error) {
@@ -45,7 +39,6 @@ const Login = () => {
             setUrl(null);
           timer && clearInterval(timer);
         }
-    //   }
     }, 3000);
     // eslint-disable-next-line
   }, [url, requestToken]);
@@ -54,19 +47,6 @@ const Login = () => {
     e.preventDefault();
     setEmail('');
     setPassword('');
-  };
-
-  // ...
-  const MyWebComponent = url => {
-    console.log('line 53', url);
-    return (
-      <View style={{flex: 1}}>
-        <WebView
-          source={{uri: url}}
-          style={{flex: 1, height: height, width: width}}
-        />
-      </View>
-    );
   };
 
   const createRequestToken = async () => {
@@ -83,12 +63,8 @@ const Login = () => {
       fetch('https://api.themoviedb.org/4/auth/request_token', options)
         .then(response => response.json())
         .then(async response => {
-          console.log('line 68', response?.request_token);
           setRequestToken(response?.request_token);
           const url = `https://www.themoviedb.org/auth/access?request_token=${response?.request_token}`;
-        //   MyWebComponent(url);
-          //   const popup = window.open(url);
-          //   setExternalPopup(popup);
           setUrl(url);
         })
         .catch(err => console.error(err));
@@ -132,8 +108,8 @@ const Login = () => {
       </View>
   ) : (
     <View style={{flex: 1}}>
-      <Text style={{textAlign: 'center'}}>Regov Technologies</Text>
-      <Text style={{textAlign: 'center'}}>Sign In</Text>
+      <Text style={{ textAlign: 'center', fontSize: 18, marginTop: 10 }}>Regov Technologies</Text>
+      <Text style={{textAlign: 'center', fontSize: 15, marginTop: 10 }}>Sign In</Text>
       <View
         style={{
           display: 'flex',
@@ -144,23 +120,26 @@ const Login = () => {
           <View>
             <Text>Email:</Text>
             <TextInput
+              style={{ borderWidth: 1, height: 40 }}
               type="email"
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
           </View>
-          {/* <br /> */}
           <View>
             <Text>Password:</Text>
             <TextInput
-              type="password"
+              style={{ borderWidth: 1, height: 40 }}
+              secureTextEntry={true}
               value={password}
               onChange={e => setPassword(e.target.value)}
             />
           </View>
-          {/* <br /> */}
-          <View>
-            {/* <Button type="submit">Sign In</Button> */}
+          <View
+          style={{ marginTop: 10, flexDirection: 'row', alignContent: 'space-between' }}
+          >
+            <Button
+            title="Sign In" />
             <Button
               onPress={theMovieDBSignIn}
               title="Sign In with themoviedb"
